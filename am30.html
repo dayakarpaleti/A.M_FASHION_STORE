@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FashionHub | Premium Fashion Destination</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #e91e63;
+            --secondary: #ff4081;
+            --dark: #212121;
+            --light: #f5f5f5;
+            --gray: #9e9e9e;
+            --accent: #ff9800;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Top Header */
+        .top-header {
+            background: var(--dark);
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 12px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--primary);
+        }
+
+        .top-nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .top-nav-link {
+            color: #ddd;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .top-nav-link:hover {
+            color: white;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            max-width: 500px;
+            margin: 0 20px;
+        }
+
+        .search-input {
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: none;
+            width: 100%;
+            font-size: 14px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding-left: 45px;
+        }
+
+        .search-input::placeholder {
+            color: #ccc;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ccc;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .user-action {
+            color: #ddd;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            position: relative;
+        }
+
+        .user-action:hover {
+            color: white;
+        }
+
+        .cart-count {
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .user-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* Main Navigation */
+        .main-header {
+            background: #fff;
+            position: fixed;
+            top: 50px;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 10px;
+            gap: 0;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 13px;
+            padding: 15px 15px;
+            display: block;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: #f0f2f5;
+            color: var(--primary);
+        }
+
+        .sale-item {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Dropdown Styles */
+        .dropdown-container {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            display: none;
+            z-index: 1000;
+            min-width: 250px;
+        }
+
+        .nav-item:hover .dropdown-container {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .dropdown-menu {
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-radius: 0 0 8px 8px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .dropdown-column {
+            min-width: 0;
+        }
+
+        .dropdown-header {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f0f2f5;
+            font-size: 15px;
+            text-transform: uppercase;
+        }
+
+        .dropdown-item {
+            padding: 8px 0;
+            display: block;
+            color: var(--dark);
+            text-decoration: none;
+            transition: all 0.2s;
+            font-size: 14px;
+            line-height: 1.4;
+            white-space: normal;
+        }
+
+        .dropdown-item:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        /* Beauty dropdown right-aligned */
+        .nav-item.beauty-item .dropdown-container {
+            left: auto;
+            right: 0;
+        }
+
+        .nav-item.beauty-item .dropdown-menu {
+            grid-template-columns: repeat(2, minmax(250px, 1fr));
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 140px auto 40px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 60px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(233, 30, 99, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero:before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 14px 35px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:hover {
+            background: var(--dark);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            position: relative;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .category-img {
+            height: 200px;
+            background: linear-gradient(45deg, #f5f7fa, #e4e7eb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--primary);
+        }
+
+        .category-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .category-content h3 {
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .category-content p {
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        /* Auth Forms */
+        .auth-container {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: 100px auto;
+            position: relative;
+        }
+
+        .close-auth {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--gray);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-auth:hover {
+            color: var(--primary);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-header h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            cursor: pointer;
+            background: #f9f9f9;
+            transition: all 0.3s;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .tab:first-child {
+            border-radius: 8px 0 0 0;
+        }
+
+        .tab:last-child {
+            border-radius: 0 8px 0 0;
+        }
+
+        .tab-indicator {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: var(--primary);
+            transition: all 0.3s;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(233, 30, 99, 0.2);
+        }
+
+        .auth-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .auth-btn:hover {
+            background: var(--secondary);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--gray);
+        }
+
+        .form-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .success-message {
+            display: none;
+            background: #dff0d8;
+            color: #3c763d;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .error-message {
+            display: none;
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .search-container {
+                max-width: 300px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .header-container {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            .nav-menu {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding: 10px 0;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            
+            .nav-menu::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .dropdown-container {
+                position: fixed;
+                top: 130px;
+                left: 0;
+                right: 0;
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .nav-item.beauty-item .dropdown-container {
+                left: 0;
+                right: auto;
+            }
+            
+            .main-content {
+                margin-top: 180px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-header {
+                padding: 10px 0;
+            }
+            
+            .logo {
+                font-size: 22px;
+            }
+            
+            .search-container {
+                order: 3;
+                max-width: 100%;
+                margin: 10px 0 0;
+            }
+            
+            .user-actions {
+                margin-left: auto;
+            }
+            
+            .hero {
+                padding: 40px 20px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .auth-container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Header -->
+    <div class="top-header">
+        <div class="header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-crown"></i>
+                AM FASHION STORE
+            </a>
+            <div class="top-nav">
+			
+                <a href="#" class="top-nav-link">Women</a>
+                <a href="#" class="top-nav-link">Men</a>
+            </div>
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" placeholder="Search for items and brands">
+            </div>
+            <div class="user-actions">
+                <a href="#signin" class="user-action" id="signin-link">
+                    <i class="fas fa-user"></i>
+                    Sign In
+                </a>
+                <a href="#signin" class="user-action" id="signup-link">
+                    <i class="fas fa-user-plus"></i>
+                    Sign Up
+                </a>
+                <a href="#" class="user-action">
+                    <i class="fas fa-heart"></i>
+                    Saved
+                </a>
+                <a href="#" class="user-action">
+                    <i class="fas fa-shopping-bag"></i>
+                    Cart
+                    <span class="cart-count">3</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation -->
+    <header class="main-header">
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="#" class="nav-link active">TRENDING</a>
+                <div class="dropdown-container">
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">WHAT'S NEW</div>
+                            <a href="#" class="dropdown-item">New in: Today</a>
+                            <a href="#" class="dropdown-item">View all</a>
+                            <a href="#" class="dropdown-item">Clothing</a>
+                            <a href="#" class="dropdown-item">Dresses</a>
+                            <a href="#" class="dropdown-item">Shoes</a>
+                            <a href="#" class="dropdown-item">Sneakers</a>
+                            <a href="#" class="dropdown-item">Accessories</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">THE VACATION SHOP</div>
+                            <a href="#" class="dropdown-item">Beachy Bliss</a>
+                            <a href="#" class="dropdown-item">Vacay Dresses</a>
+                            <a href="#" class="dropdown-item">Swim</a>
+                            <a href="#" class="dropdown-item">Euro Summer</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">BRANDS NEW IN</div>
+                            <a href="#" class="dropdown-item">ARRANGE</a>
+                            <a href="#" class="dropdown-item">Abercrombie & Fitch</a>
+                            <a href="#" class="dropdown-item">Free People</a>
+                            <a href="#" class="dropdown-item">Good American</a>
+                            <a href="#" class="dropdown-item">MANGO</a>
+                            <a href="#" class="dropdown-item">Oh Polly</a>
+                            <a href="#" class="dropdown-item">Princess Polly</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            
+            <li class="nav-item">
+                <a href="#" class="nav-link">NEW IN</a>
+                <div class="dropdown-container">
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">Women's New In</div>
+                            <a href="#" class="dropdown-item">Today's New Arrivals</a>
+                            <a href="#" class="dropdown-item">Clothing</a>
+                            <a href="#" class="dropdown-item">Dresses</a>
+                            <a href="#" class="dropdown-item">Shoes</a>
+                            <a href="#" class="dropdown-item">Sneakers</a>
+                            <a href="#" class="dropdown-item">Accessories</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">Just Landed</div>
+                            <a href="#" class="dropdown-item">WEWOREWHAT</a>
+                            <a href="#" class="dropdown-item">Summer Sequins</a>
+                            <a href="#" class="dropdown-item">Sophisticated Summer</a>
+                            <a href="#" class="dropdown-item">Matching Sets</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            
+            <li class="nav-item">
+                <a href="#" class="nav-link">CLOTHING</a>
+                <div class="dropdown-container">
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">Shop by Product</div>
+                            <a href="#" class="dropdown-item">View all</a>
+                            <a href="#" class="dropdown-item">New in</a>
+                            <a href="#" class="dropdown-item">Dresses</a>
+                            <a href="#" class="dropdown-item">Blouses</a>
+                            <a href="#" class="dropdown-item">Tops</a>
+                            <a href="#" class="dropdown-item">Shorts</a>
+                            <a href="#" class="dropdown-item">Skirts</a>
+                            <a href="#" class="dropdown-item">Swimwear & Beachwear</a>
+                            <a href="#" class="dropdown-item">Pants & Leggings</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">Shop by Occasion</div>
+                            <a href="#" class="dropdown-item">Wedding Guest</a>
+                            <a href="#" class="dropdown-item">Office Attire</a>
+                            <a href="#" class="dropdown-item">Vacation & Resort</a>
+                            <a href="#" class="dropdown-item">Festival</a>
+                            <a href="#" class="dropdown-item">Modest fashion</a>
+                            <a href="#" class="dropdown-item">Prom</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            
+            <li class="nav-item">
+                <a href="#" class="nav-link">DRESSES</a>
+                <div class="dropdown-container">
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">Popular Categories</div>
+                            <a href="#" class="dropdown-item">View All</a>
+                            <a href="#" class="dropdown-item">Vacation Dresses</a>
+                            <a href="#" class="dropdown-item">Denim Dresses</a>
+                            <a href="#" class="dropdown-item">ASOS Curve & Plus Size</a>
+                            <a href="#" class="dropdown-item">Bestsellers</a>
+                            <a href="#" class="dropdown-item">Birthday Dresses</a>
+                            <a href="#" class="dropdown-item">Floral Dresses</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">Shop by Style</div>
+                            <a href="#" class="dropdown-item">Day Dresses</a>
+                            <a href="#" class="dropdown-item">Sequin Dresses</a>
+                            <a href="#" class="dropdown-item">Petite Dresses</a>
+                            <a href="#" class="dropdown-item">Denim Dresses</a>
+                            <a href="#" class="dropdown-item">Party Dresses</a>
+                            <a href="#" class="dropdown-item">Maxi Dresses</a>
+                            <a href="#" class="dropdown-item">Tall Dresses</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            
+            <li class="nav-item">
+                <a href="#" class="nav-link">SHOES</a>
+                <div class="dropdown-container">
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">Shop by Style</div>
+                            <a href="#" class="dropdown-item">Top Rated Shoes</a>
+                            <a href="#" class="dropdown-item">Bestsellers</a>
+                            <a href="#" class="dropdown-item">View all</a>
+                            <a href="#" class="dropdown-item">New in</a>
+                            <a href="#" class="dropdown-item">Boots</a>
+                            <a href="#" class="dropdown-item">Flat shoes</a>
+                          
+                            <a href="#" class="dropdown-item">Loafers</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">Shop by Brand</div>
+                            <a href="#" class="dropdown-item">ASOS DESIGN</a>
+                            <a href="#" class="dropdown-item">Adidas</a>
+                            <a href="#" class="dropdown-item">Converse</a>
+                            <a href="#" class="dropdown-item">Dr Martens</a>
+                            <a href="#" class="dropdown-item">New Balance</a>
+                            <a href="#" class="dropdown-item">Nike</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            
+            <li class="nav-item">
+                <a href="#" class="nav-link">PLUS SIZE</a>
+                <div class="dropdown-container">
+                    <div class="dropdown-menu">
+                        
+                            <div class="dropdown-header">Trending</div>
+                            <a href="#" class="dropdown-item">New In</a>
+                            <a href="#" class="dropdown-item">Clothing</a>
+                            <a href="#" class="dropdown-item">Dresses</a>
+                            <a href="#" class="dropdown-item">Shoes</a>
+                            <a href="#" class="dropdown-item">Activewear</a>
+                            <a href="#" class="dropdown-item sale-item">SALE</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">Shop by Size</div>
+                            <a href="#" class="dropdown-item">16</a>
+                            <a href="#" class="dropdown-item">18</a>
+                            <a href="#" class="dropdown-item">20</a>
+                            <a href="#" class="dropdown-item">22</a>
+                            <a href="#" class="dropdown-item">24</a>
+                            <a href="#" class="dropdown-item">26</a>
+                            <a href="#" class="dropdown-item">28+</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            
+            <li class="nav-item">
+                <a href="#" class="nav-link">ACTIVEWEAR</a>
+                <div class="dropdown-container">
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">Shop by Product</div>
+                            <a href="#" class="dropdown-item">View all</a>
+                            <a href="#" class="dropdown-item">New in</a>
+                            <a href="#" class="dropdown-item">Sneakers</a>
+                            <a href="#" class="dropdown-item">Tops</a>
+                            <a href="#" class="dropdown-item">Leggings</a>
+                            <a href="#" class="dropdown-item">Sports bras</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">Shop by Activity</div>
+                            <a href="#" class="dropdown-item">Gym & Training</a>
+                            <a href="#" class="dropdown-item">Running</a>
+                            <a href="#" class="dropdown-item">Outdoors</a>
+                            <a href="#" class="dropdown-item">Yoga & Pilates</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            
+            <li class="nav-item">
+                <a href="#" class="nav-link">ACCESSORIES</a>
+                <div class="dropdown-container">
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">Essentials</div>
+                            <a href="#" class="dropdown-item">Bestsellers</a>
+                            <a href="#" class="dropdown-item">View all</a>
+                            <a href="#" class="dropdown-item">New in</a>
+                            <a href="#" class="dropdown极客时间
+                            <a href="#" class="dropdown-item">Hats</a>
+                            <a href="#" class="dropdown-item">Hair accessories</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">Shop by Bags</div>
+                            <a href="#" class="dropdown-item">View all</a>
+                            <a href="#" class="dropdown-item">Crossbody bags</a>
+                            <a href="#" class="dropdown-item">Shoulder bags</a>
+                            <a href="#" class="dropdown-item">Tote bags</a>
+                            <a href="#" class="dropdown-item">Clutches</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            
+            <li class="nav-item">
+                <a href="#" class="nav-link">BRANDS</a>
+                <div class="dropdown-container">
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">Popular Brands</div>
+                            <a href="#" class="dropdown-item">A-Z of brands</a>
+                            <a href="#" class="dropdown-item">ASOS Design</a>
+                            <a href="#" class="dropdown-item">ARRANGE</a>
+                            <a href="#" class="dropdown-item">ASOS LUXE</a>
+                            <a href="#" class="dropdown-item">Abercrombie & Fitch</a>
+                            <a href="#" class="dropdown-item">adidas</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">Discover Brands</div>
+                            <a href="#" class="dropdown-item">Premium Brands</a>
+                            <a href="#" class="dropdown-item">4th & Reckless</a>
+                            <a href="#" class="dropdown-item">ARKET</a>
+                            <a href="#" class="dropdown-item">For Love & Lemons</a>
+                            <a href="#" class="dropdown-item">Keiko</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            
+            <li class="nav-item">
+                <a href="#" class="nav-link">WEDDING SHOP</a>
+                <div class="dropdown-container">
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">For the Bride</div>
+                            <a href="#" class="dropdown-item">Wedding Dresses</a>
+                            <a href="#" class="dropdown-item">Wedding Shoes</a>
+                            <a href="#" class="dropdown-item">Wedding Accessories</a>
+                            <a href="#" class="dropdown-item">Bridal Lingerie</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">Wedding Guest</div>
+                            <a href="#" class="dropdown-item">Wedding Guest Dresses</a>
+                            <a href="#" class="dropdown-item">Wedding Guest Jumpsuits</a>
+                            <a href="#" class="dropdown-item">Black Wedding Guest Dresses</a>
+                            <a href="#" class="dropdown-item">Long Sleeve Dresses</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            
+            <!-- Sale dropdown before Beauty -->
+            <li class="nav-item">
+                <a href="#" class="nav-link sale-item">SALE</a>
+                <div class="dropdown-container">
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">Shop by Category</div>
+                            <a href="#" class="dropdown-item">View All Sale</a>
+                            <a href="#" class="dropdown-item">Sale Dresses</a>
+                            <a href="#" class="dropdown-item">Sale Tops</a>
+                            <a href="#" class="dropdown-item">Sale Swim</a>
+                            <a href="#" class="dropdown-item">Sale Shoes & Sneakers</a>
+                            <a href="#" class="dropdown-item">Sale Accessories</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">Shop by Price</div>
+                            <a href="#" class="dropdown-item">$23 and Under</a>
+                            <a href="#" class="dropdown-item">$30 and Under</a>
+                            <a href="#" class="dropdown-item">$75 and Under</a>
+                            <a href="#" class="dropdown-item">$100 and Under</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            
+            <!-- Beauty dropdown - right aligned -->
+            <li class="nav-item beauty-item">
+                <a href="#" class="nav-link">BEAUTY</a>
+                <div class="dropdown-container">
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">Shop by Product</div>
+                            <a href="#" class="dropdown-item">Top Rated Face + Body</a>
+                            <a href="#" class="dropdown-item">Up to 30% off Face + Body brands</a>
+                            <a href="#" class="dropdown-item">New in</a>
+                            <a href="#" class="dropdown-item">View all</a>
+                            <a href="#" class="dropdown-item">Makeup</a>
+                            <a href="#" class="dropdown-item">Skin care</a>
+                            <a href="#" class="dropdown-item">Hair care</a>
+                            <a href="#" class="dropdown-item">Fragrances</a>
+                            <a href="#" class="dropdown-item">Nail care</a>
+                            <a href="#" class="dropdown-item">Beauty tools</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <div class="dropdown-header">Featured Brands</div>
+                            <a href="#" class="dropdown-item">Fenty Beauty</a>
+                            <a href="#" class="dropdown-item">MAC Cosmetics</a>
+                            <a href="#" class="dropdown-item">The Ordinary</a>
+                            <a href="#" class="dropdown-item">Kylie Cosmetics</a>
+                            <a href="#" class="dropdown-item">Huda Beauty</a>
+                            <a href="#" class="dropdown-item">Charlotte Tilbury</a>
+                            <a href="#" class="dropdown-item">Glossier</a>
+                            <a href="#" class="dropdown-item">Rare Beauty</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <section class="hero">
+            <h1>Elevate Your Style</h1>
+            <p>Discover the latest fashion trends and exclusive collections for the season. Premium quality with affordable prices.</p>
+            <button class="btn">SHOP NEW ARRIVALS</button>
+        </section>
+        
+        <h2 style="text-align: center; margin: 30px 0; color: var(--primary);">Shop By Category</h2>
+        
+        <div class="categories">
+            <div class="category-card">
+                <div class="category-img">
+                    <i class="fas fa-tshirt"></i>
+                </div>
+                <div class="category-content">
+                    <h3>Women's Clothing</h3>
+                    <p>Discover the latest trends in women's fashion</p>
+                    <a href="#" class="btn">Explore</a>
+                </div>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-img">
+                    <i class="fas fa-shoe-prints"></i>
+                </div>
+                <div class极客时间
+                    <h3>Shoes & Accessories</h3>
+                    <p>Complete your look with our premium collection</p>
+                    <a href="#" class="btn">Explore</a>
+                </div>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-img">
+                    <i class="fas fa-running"></i>
+                </div>
+                <div class="category-content">
+                    <h3>Activewear</h3>
+                    <p>Performance wear that combines style and function</p>
+                    <a href="#" class="btn">Explore</a>
+                </div>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-img">
+                    <i class="fas fa-gem"></极客时间
+                </div>
+                <div class="category-content">
+                    <h3>Luxury Collection</h3>
+                    <p>Premium designer pieces for special occasions</p>
+                    <a href="#" class="btn">Explore</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Sign In / Sign Up Section -->
+    <section id="signin" class="auth-container" style="display: none;">
+        <button class="close-auth" id="close-auth">&times;</button>
+        <div class="auth-header">
+            <h2>Welcome to FashionHub</h2>
+            <p>Sign in to your account or create a new one</p>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab-indicator" id="tab-indicator"></div>
+            <div class="tab active" data-tab="login">Sign In</div>
+            <div class="tab" data-tab="register">Sign Up</div>
+        </div>
+        
+        <div id="login-form">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password">
+            </div>
+            
+            <button class="auth-btn" id="login-btn">Sign In</button>
+            
+            <div class="error-message" id="login-error"></div>
+            
+            <div class="form-footer">
+                <p>Forgot your password? <a href="#">Reset it here</a></p>
+            </div>
+        </div>
+        
+        <div id="register-form" style="display: none;">
+            <div class="form-group">
+                <label for="fullname">Full Name</label>
+                <input type="text" id="fullname" placeholder="Enter your full name">
+            </div>
+            
+            <div class="form-group">
+                <label for="reg-email">Email Address</label>
+                <input type="email" id="reg-email" placeholder="Enter your email">
+            </div>
+            
+            <div class="form-group">
+                <label for="reg-password">Password</label>
+                <input type="password" id="reg-password" placeholder="Create a password">
+            </div>
+            
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" placeholder="Confirm your password">
+            </div>
+            
+            <button class="auth-btn" id="register-btn">Create Account</button>
+            
+            <div class="error-message" id="register-error"></div>
+            
+            <div class="form-footer">
+                <p>By creating an account, you agree to our <a href="#">Terms & Conditions</a></p>
+            </div>
+        </div>
+        
+        <div class="success-message" id="success-message">
+            <i class="fas fa-check-circle"></i> Account created successfully! You can now sign in.
+        </div>
+    </section>
+
+    <script>
+        // Account functionality
+        let accounts = JSON.parse(localStorage.getItem('fashionhub_accounts')) || [];
+        let currentUser = null;
+        
+        // DOM elements
+        const authContainer = document.getElementById('signin');
+        const closeAuthBtn = document.getElementById('close-auth');
+        const signinLink = document.getElementById('signin-link');
+        const signupLink = document.getElementById('signup-link');
+        const tabs = document.querySelectorAll('.tab');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const tabIndicator = document.getElementById('tab-indicator');
+        const successMessage = document.getElementById('success-message');
+        const loginError = document.getElementById('login-error');
+        const registerError = document.getElementById('register-error');
+        
+        // Initialize tab indicator position
+        function updateTabIndicator() {
+            const activeTab = document.querySelector('.tab.active');
+            if (activeTab) {
+                const tabWidth = activeTab.offsetWidth;
+                const tabLeft = activeTab.offsetLeft;
+                tabIndicator.style.width = `${tabWidth}px`;
+                tabIndicator.style.transform = `translateX(${tabLeft}px)`;
+            }
+        }
+        
+        // Update tab indicator on load
+        setTimeout(updateTabIndicator, 100);
+        
+        // Show/hide auth container
+        function showAuth() {
+            authContainer.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function hideAuth() {
+            authContainer.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+        
+        // Tab switching
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Update tab indicator
+                updateTabIndicator();
+                
+                // Show the corresponding form
+                if (tab.dataset.tab === 'login') {
+                    loginForm.style.display = 'block';
+                    registerForm.style.display = 'none';
+                    successMessage.style.display = 'none';
+                    loginError.style.display = 'none';
+                } else {
+                    loginForm.style.display = 'none';
+                    registerForm.style.display = 'block';
+                    successMessage.style.display = 'none';
+                    registerError.style.display = 'none';
+                }
+            });
+        });
+        
+        // Top links functionality
+        signinLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Activate sign in tab
+            tabs.forEach(t => t.classList.remove('active'));
+            document.querySelector('.tab[data-tab="login"]').classList.add('active');
+            updateTabIndicator();
+            loginForm.style.display = 'block';
+            register极客时间
+            successMessage.style.display = 'none';
+            loginError.style.display = 'none';
+            
+            // Show auth container
+            showAuth();
+        });
+        
+        signupLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Activate sign up tab
+            tabs.forEach(t => t.classList.remove('active'));
+            document.querySelector('.tab[data-tab="register"]').classList.add('active');
+            updateTabIndicator();
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+            successMessage.style.display = 'none';
+            registerError.style.display = 'none';
+            
+            // Show auth container
+            showAuth();
+        });
+        
+        // Close auth container
+        closeAuthBtn.addEventListener('click', () => {
+            hideAuth();
+        });
+        
+        // Close when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === authContainer) {
+                hideAuth();
+            }
+        });
+        
+        // Registration functionality
+        document.getElementById('register-btn').addEventListener('click', function() {
+            const fullname = document.getElementById('fullname').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const password = document.getElementById('reg-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            // Reset error
+            registerError.style.display = 'none';
+            
+            // Validation
+            if (!fullname || !email || !password || !confirmPassword) {
+                registerError.textContent = 'Please fill in all fields';
+                registerError.style.display = 'block';
+                return;
+            }
+            
+            if (password.length < 6) {
+                registerError.textContent = 'Password must be at least 6 characters';
+                registerError.style.display = 'block';
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                registerError.textContent = 'Passwords do not match';
+                registerError.style.display = 'block';
+                return;
+            }
+            
+            // Check if email already exists
+            const emailExists = accounts.some(account => account.email === email);
+            if (emailExists) {
+                registerError.textContent = 'An account with this email already exists';
+                registerError.style.display = 'block';
+                return;
+            }
+            
+            // Create account
+            const newAccount = {
+                name: fullname,
+                email: email,
+                password: password
+            };
+            
+            accounts.push(newAccount);
+            localStorage.setItem('fashionhub_accounts', JSON.stringify(accounts));
+            
+            // Show success message
+            successMessage.style.display = 'block';
+            successMessage.style.animation = 'slideIn 0.5s ease';
+            
+            // Clear form
+            document.getElementById('fullname').value = '';
+            document.getElementById('reg-email').value = '';
+            document.getElementById('reg-password').value = '';
+            document.getElementById('confirm-password').value = '';
+            
+            // Switch to login after 3 seconds
+            setTimeout(() => {
+                tabs.forEach(t => t.classList.remove('active'));
+                document.querySelector('.tab[data-tab="login"]').classList.add('active');
+                updateTabIndicator();
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+                successMessage.style.display = 'none';
+                document.getElementById('email').value = email;
+            }, 3000);
+        });
+        
+        // Login functionality
+        document.getElementById('login-btn').addEventListener('click', function() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            
+            // Reset error
+            loginError.style.display = 'none';
+            
+            // Validation
+            if (!email || !password) {
+                loginError.textContent = 'Please enter both email and password';
+                loginError.style.display = 'block';
+                return;
+            }
+            
+            // Find account
+            const account = accounts.find(acc => acc.email === email && acc.password === password);
+            
+            if (account) {
+                // Successful login
+                currentUser = account;
+                updateUserUI();
+                
+                // Close the auth form
+                hideAuth();
+                
+                // Show welcome message
+                alert(`Welcome back, ${account.name.split(' ')[0]}!`);
+                
+                // Clear form
+                document.getElementById('email').value = '';
+                document.getElementById('password').value = '';
+            } else {
+                // Failed login
+                loginError.textContent = 'Invalid email or password';
+                loginError.style.display = 'block';
+            }
+        });
+        
+        // Update user UI after login
+        function updateUserUI() {
+            if (currentUser) {
+                const userActions = document.querySelector('.user-actions');
+                userActions.innerHTML = `
+                    <div class="user-badge">
+                        <div class="user-avatar">${currentUser.name.charAt(0)}</div>
+                        ${currentUser.name.split(' ')[0]}
+                    </div>
+                    <a href="#" class="user-action">
+                        <i class="fas fa-heart"></i>
+                        Saved
+                    </a>
+                    <a href="#" class="user-action">
+                        <i class="fas fa-shopping-bag"></i>
+                        Cart
+                        <span class="cart-count">3</span>
+                    </a>
+                    <a href="#" class="user-action" id="logout-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                `;
+                
+                // Add logout functionality
+                document.getElementById('logout-link').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    currentUser = null;
+                    updateUserUI();
+                    alert('You have been logged out');
+                });
+            } else {
+                const userActions = document.querySelector('.user-actions');
+                userActions.innerHTML = `
+                    <a href="#signin" class="user-action" id="signin-link">
+                        <i class="fas fa-user"></i>
+                        Sign In
+                    </a>
+                    <a href="#signin" class="user-action" id="signup-link">
+                        <i class="fas fa-user-plus"></i>
+                        Sign Up
+                    </a>
+                    <a href="#" class="user-action">
+                        <i class="fas fa-heart"></i>
+                        Saved
+                    </a>
+                    <a href="#" class="user-action">
+                        <i class="fas fa-shopping-bag"></i>
+                        Cart
+                        <span class="cart-count">3</span>
+                    </a>
+                `;
+                
+                // Reattach event listeners
+                document.getElementById('signin-link').addEventListener('click', signinLink.onclick);
+                document.getElementById('signup-link').addEventListener('click', signupLink.onclick);
+            }
+        }
+        
+        // Mobile dropdown functionality
+        if (window.innerWidth <= 992) {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const dropdown = this.nextElementSibling;
+                    const isOpen = dropdown.style.display === 'block';
+                    
+                    // Close all other dropdowns
+                    document.querySelectorAll('.dropdown-container').forEach(d => {
+                        if (d !== dropdown) d.style.display = 'none';
+                    });
+                    
+                    dropdown.style.display = isOpen ? 'none' : 'block';
+                });
+            });
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.nav-item')) {
+                    document.querySelectorAll('.dropdown-container').forEach(d => {
+                        d.style.display = 'none';
+                    });
+                }
+            });
+        }
+        
+        // Initialize UI
+        updateUserUI();
+    </script>
+</body>
+</html>
